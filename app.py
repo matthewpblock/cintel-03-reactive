@@ -54,14 +54,14 @@ with ui.layout_columns():  # Format into columns
 
         @render.data_frame
         def penguins_dt():
-            return render.DataTable(penguins)
+            return render.DataTable(filtered_data())
 
     with ui.card():
         ui.card_header("Data Grid")
 
         @render.data_frame
         def penguins_dg():
-            return render.DataGrid(penguins)
+            return render.DataGrid(filtered_data())
 
 
 with ui.layout_columns():  # Create a second row of columns
@@ -72,7 +72,7 @@ with ui.layout_columns():  # Create a second row of columns
         @render_widget
         def plot1():
             scatterplot = px.histogram(
-                data_frame=penguins,
+                data_frame=filtered_data(),
                 x=input.selected_attribute(),
                 nbins=input.plotly_bin_count(),
             ).update_layout(
@@ -88,7 +88,7 @@ with ui.layout_columns():  # Create a second row of columns
         @render.plot
         def plot2():
             ax = sns.histplot(
-                data=penguins,
+                data=filtered_data(),
                 x=input.selected_attribute(),
                 bins=input.seaborn_bin_count(),
             )
@@ -105,7 +105,7 @@ with ui.card(full_screen=True):
     @render_plotly
     def plotly_scatterplot():
         return px.scatter(
-            data_frame=penguins,
+            data_frame=filtered_data(),
             x="bill_length_mm",
             y="bill_depth_mm",
             color="species",
@@ -129,4 +129,4 @@ with ui.card(full_screen=True):
 
 @reactive.calc
 def filtered_data():
-    return penguins_df
+    return penguins
