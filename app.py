@@ -7,8 +7,11 @@ import seaborn as sns
 import palmerpenguins  # This package provides the Palmer Penguins dataset
 from palmerpenguins import load_penguins
 
+ui.update_dark_mode("dark")
+
 # Add a sidebar
-with ui.sidebar(position="left", bg="#f8f8f8", open="open"):
+with ui.sidebar(position="left", bg="#181818", open="open"):
+    ui.update_dark_mode("dark")
     ui.h2("Sidebar")  # Sidebar header
     # Insert Drop-Down menu
     ui.input_selectize(
@@ -23,7 +26,7 @@ with ui.sidebar(position="left", bg="#f8f8f8", open="open"):
         id="seaborn_bin_count", label="Bin Count (Seaborn)", min=3, max=21, value=7
     )
 
-    # Insert checkbox filter
+    # Insert checkbox filter for species
     ui.input_checkbox_group(
         id="selected_species_list",
         label="Species",
@@ -31,6 +34,14 @@ with ui.sidebar(position="left", bg="#f8f8f8", open="open"):
         selected=["Adelie", "Gentoo", "Chinstrap"],
         inline=False,
     )
+     # Insert checkbox filter for island
+    ui.input_checkbox_group(
+        id="selected_island_list",
+        inline=True,
+        label="Islands",
+        choices=["Torgerson", "Biscoe", "Dream"],
+        selected=["Torgerson", "Biscoe", "Dream"])
+    
     # Inster a dividing line
     ui.hr()
     # Insert a link
@@ -131,5 +142,5 @@ with ui.card(full_screen=True):
 
 @reactive.calc
 def filtered_data():
-    isSpeciesMatch = penguins["species"].isin(input.selected_species_list())
-    return penguins[isSpeciesMatch]
+    isFilterMatch = penguins["species"].isin(input.selected_species_list()) & penguins["island"].isin(input.selected_island_list())
+    return penguins[isFilterMatch]
