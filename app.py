@@ -114,9 +114,10 @@ with ui.card(full_screen=True):
                 "bill_depth_mm": "Bill Depth",
                 "bill_length_mm": "Bill Length",
                 "species": "Species",
-                "island": "Island"
+                "island": "Island",
             },
         )
+
 
 # --------------------------------------------------------
 # Reactive calculations and effects
@@ -127,6 +128,8 @@ with ui.card(full_screen=True):
 # The function will be called whenever an input functions used to generate that output changes.
 # Any output that depends on the reactive function (e.g., filtered_data()) will be updated when the data changes.
 
+
 @reactive.calc
 def filtered_data():
-    return penguins
+    isSpeciesMatch = penguins["species"].isin(input.selected_species_list())
+    return penguins[isSpeciesMatch]
